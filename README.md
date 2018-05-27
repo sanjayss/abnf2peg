@@ -1,5 +1,4 @@
 # abnf2peg
-Convert ABNF grammars to PEG grammars (sort of)
 
 This is an attempt to make a tool that can convert [Augmented Backus-Naur Form (ABNF)](https://en.wikipedia.org/wiki/Augmented_Backus%E2%80%93Naur_form) grammars to [Parsing Expression Grammar (PEG)](https://en.wikipedia.org/wiki/Parsing_expression_grammar) grammars.
 
