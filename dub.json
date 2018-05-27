@@ -1,0 +1,12 @@
+{
+	"name": "abnf2peg",
+	"authors": [
+		"Sanjay S"
+	],
+	"dependencies": {
+		"pegged": "~>0.4.3"
+	},
+	"description": "ABNF grammar to PEG grammar converter",
+	"copyright": "Copyright © 2018, Sanjay S",
+	"license": "Boost (http://www.boost.org/LICENSE_1_0.txt)"
+}

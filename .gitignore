@@ -1,0 +1,14 @@
+.dub
+docs.json
+__dummy.html
+docs/
+abnf2peg.so
+abnf2peg.dylib
+abnf2peg.dll
+abnf2peg.a
+abnf2peg.lib
+abnf2peg-test-*
+*.exe
+*.o
+*.obj
+*.lst
