@@ -7,4 +7,4 @@ This is written in the [D programming language](https://dlang.org/) and only con
 ABNF grammars are used in a number of RFCs to define communication protocols and some file formats.
 
 ## How to build
-To use, you need a [D language compiler](https://dlang.org/download.html) and the [Dub tool](https://github.com/dlang/dub) that is used to create D language packages. Just do "dub build" from the root of the project to generate the *abnf2peg* binary for your platform.
+To use, you need a [D language compiler](https://dlang.org/download.html) and the [Dub tool](https://github.com/dlang/dub) that is used to build and manage D language packages. Just do "dub build" from the root of the project to generate the *abnf2peg* binary for your platform.
