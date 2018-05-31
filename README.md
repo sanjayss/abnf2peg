@@ -8,3 +8,6 @@ ABNF grammars are used in a number of RFCs to define communication protocols and
 
 ## How to build
 To use, you need a [D language compiler](https://dlang.org/download.html) and the [Dub tool](https://github.com/dlang/dub) that is used to build and manage D language packages. Just do "dub build" from the root of the project to generate the *abnf2peg* binary for your platform.
+
+## Caveats
+  - ABNF _prose-val_ will need hand-editing
