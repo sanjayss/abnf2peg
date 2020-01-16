@@ -183,7 +183,7 @@ string translateNumVal(ParseTree p)
     {
 	// Just a single digit
 	auto num = to!int(numStrs[1], base);
-	result = " [" ~ toAsciiStr(num) ~ "] ";
+	result = " [" ~ toAsciiStr(num, [ `[`, `]`, `\` ]) ~ "] ";
     }
     else if (numStrs[2] == "-" && numStrs.length == 4)
     {
@@ -191,16 +191,18 @@ string translateNumVal(ParseTree p)
 	auto min = to!int(numStrs[1], base);
 	auto max = to!int(numStrs[3], base);
 
-	result = " [" ~ toAsciiStr(min) ~ "-" ~ toAsciiStr(max) ~ "] ";
+	result = " [" ~ toAsciiStr(min, [ `[`, `]`, `\` ]) ~ "-" ~ toAsciiStr(max, [ `[`, `]`, `\` ]) ~ "] ";
     }
     else if (numStrs[2] == ".")
     {
 	// Concatenated numbers
+	result = `"`;
 	for (int i = 1; i < numStrs.length; i += 2)
 	{
 	    auto num = to!int(numStrs[i], base);
-	    result = " [" ~ toAsciiStr(num) ~ "] ";
+	    result ~= toAsciiStr(num, [ `"`, `\` ]);
 	}
+	result ~= `"`;
     }
     else
     {
@@ -395,21 +397,35 @@ string toPeg(ParseTree p)
     return parseToPeg(p.children[0]);
 }
 
-string toAsciiStr(int num)
+string toAsciiStr(int num, string[] toEscape)
 {
     auto errMsg = "Only values in the ASCII range are supported: ";
 
-    enforce(num >= 0 && num < 256, errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
+    import std.format : format;
 
-    if (num >= 128 && num < 256)
+    if (num <= 0x7F)
+    {
+	import std.algorithm : any;
+
+	auto asciiStr = asciiTable[num];
+	if (toEscape.any!((e) => e == asciiStr))
+	{
+	    asciiStr = `\` ~ asciiStr;
+	}
+	enforce(asciiStr != "", errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
+	return asciiStr;
+    }
+    else if (num <= 0xFF)
     {
 	return "\\x" ~ to!string(num, 16);
     }
+    else if (num <= 0xFFFF)
+    {
+	return `\u` ~ "%04X".format(num);
+    }
     else
     {
-	auto asciiStr = asciiTable[num];
-	enforce(asciiStr != "", errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
-	return asciiStr;
+	return `\U` ~ "%08X".format(num);
     }
 }
 
