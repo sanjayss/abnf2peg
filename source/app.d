@@ -183,7 +183,7 @@ string translateNumVal(ParseTree p)
     {
 	// Just a single digit
 	auto num = to!int(numStrs[1], base);
-	result = " [" ~ toAsciiStr(num) ~ "] ";
+	result = " [" ~ toAsciiStr(num, [ `[`, `]`, `\` ]) ~ "] ";
     }
     else if (numStrs[2] == "-" && numStrs.length == 4)
     {
@@ -191,7 +191,7 @@ string translateNumVal(ParseTree p)
 	auto min = to!int(numStrs[1], base);
 	auto max = to!int(numStrs[3], base);
 
-	result = " [" ~ toAsciiStr(min) ~ "-" ~ toAsciiStr(max) ~ "] ";
+	result = " [" ~ toAsciiStr(min, [ `[`, `]`, `\` ]) ~ "-" ~ toAsciiStr(max, [ `[`, `]`, `\` ]) ~ "] ";
     }
     else if (numStrs[2] == ".")
     {
@@ -202,13 +202,13 @@ string translateNumVal(ParseTree p)
 	// stderr.writeln('\n');
 
 	// Concatenated numbers
-	result = "\"";
+	result = `"`;
 	for (int i = 1; i < numStrs.length; i += 2)
 	{
 	    auto num = to!int(numStrs[i], base);
-	    result ~= toAsciiStr(num);
+	    result ~= toAsciiStr(num, [ `"`, `\` ]);
 	}
-	result ~= "\"";
+	result ~= `"`;
     }
     else
     {
@@ -403,7 +403,7 @@ string toPeg(ParseTree p)
     return parseToPeg(p.children[0]);
 }
 
-string toAsciiStr(int num)
+string toAsciiStr(int num, string[] toEscape)
 {
     auto errMsg = "Only values in the ASCII range are supported: ";
 
@@ -415,7 +415,13 @@ string toAsciiStr(int num)
     }
     else
     {
+	import std.algorithm : any;
+
 	auto asciiStr = asciiTable[num];
+	if (toEscape.any!((e) => e == asciiStr))
+	{
+	    asciiStr = `\` ~ asciiStr;
+	}
 	enforce(asciiStr != "", errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
 	return asciiStr;
     }
@@ -429,10 +435,10 @@ string[] asciiTable =
      "\\x08", "\\t", "\\n", "\\x0B", "\\x0C", "\\r", "\\x0D", "\\x0E",
      "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", "\\x15", "\\x16", "\\x17",
      "\\x18", "\\x19", "\\x1A", "\\x1B", "\\x1C", "\\x1D", "\\x1E", "\\x1F",
-     " ", "!", "\\\"", "#", "$", "%", "&", "\\'", "(", ")", "*", "+", ",", "-", ".", "/",
+     " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?",
      "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-     "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "\\[", "\\\\", "\\]", "^", "_",
+     "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_",
      "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
      "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", "\\x7F"
 ];
