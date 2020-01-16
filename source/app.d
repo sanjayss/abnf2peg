@@ -407,13 +407,9 @@ string toAsciiStr(int num, string[] toEscape)
 {
     auto errMsg = "Only values in the ASCII range are supported: ";
 
-//     enforce(num >= 0 && num < 256, errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
+    import std.format : format;
 
-    if (num >= 128)
-    {
-	return "\\x" ~ to!string(num, 16);
-    }
-    else
+    if (num <= 0x7F)
     {
 	import std.algorithm : any;
 
@@ -424,6 +420,18 @@ string toAsciiStr(int num, string[] toEscape)
 	}
 	enforce(asciiStr != "", errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
 	return asciiStr;
+    }
+    else if (num <= 0xFF)
+    {
+	return "\\x" ~ to!string(num, 16);
+    }
+    else if (num <= 0xFFFF)
+    {
+	return `\u` ~ "%04X".format(num);
+    }
+    else
+    {
+	return `\U` ~ "%08X".format(num);
     }
 }
 
