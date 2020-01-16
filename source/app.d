@@ -195,12 +195,6 @@ string translateNumVal(ParseTree p)
     }
     else if (numStrs[2] == ".")
     {
-	// import std.array : join;
-	// import std.stdio : stderr;
-	// stderr.writeln(`numVal: "` ~ numStrs.join ~ `".`);
-	// stderr.writeln(`separately: ` ~ numStrs.to!string);
-	// stderr.writeln('\n');
-
 	// Concatenated numbers
 	result = `"`;
 	for (int i = 1; i < numStrs.length; i += 2)
