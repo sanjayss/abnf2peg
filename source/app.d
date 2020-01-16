@@ -399,9 +399,9 @@ string toAsciiStr(int num)
 {
     auto errMsg = "Only values in the ASCII range are supported: ";
 
-    enforce(num >= 0 && num < 256, errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
+//     enforce(num >= 0 && num < 256, errMsg ~ to!string(num) ~ " (Hex: 0x" ~ to!string(num, 16) ~ ")");
 
-    if (num >= 128 && num < 256)
+    if (num >= 128)
     {
 	return "\\x" ~ to!string(num, 16);
     }
