@@ -12,3 +12,5 @@ abnf2peg-test-*
 *.o
 *.obj
 *.lst
+
+/abnf2peg
