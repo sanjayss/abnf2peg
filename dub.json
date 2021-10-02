@@ -4,7 +4,7 @@
 		"Sanjay S"
 	],
 	"dependencies": {
-		"pegged": "~>0.4.3"
+		"pegged": "~>0.4.5"
 	},
 	"description": "ABNF grammar to PEG grammar converter",
 	"copyright": "Copyright © 2018, Sanjay S",
